@@ -23,15 +23,15 @@ class ItemsController < ApplicationController
   end
 
   def create
-    # if params[:user_id]
-      # user = User.find(params[:user_id])
-      item = Item.create!(item_params)
-      # user.items << item
+    if params[:user_id]
+      user = User.find(params[:user_id])
+      item = Item.create(item_params)#for now we're not validating any data so i'll use create instead of create!
+      user.items << item
     
-    # end
+    end
     render json: item, include: :user, status: :created
-  rescue ActiveRecord::RecordInvalid => invalid
-    render json: { errors: invalid.record.errors.full_messages }, status: :unprocessable_entity
+  # rescue ActiveRecord::RecordInvalid => invalid #for now since we're not validating any data I'm commenting this out bcz we've used create without bang above
+  #   render json: { errors: invalid.record.errors.full_messages }, status: :unprocessable_entity
   end
 
   private
